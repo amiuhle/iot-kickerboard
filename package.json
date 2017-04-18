@@ -2,7 +2,19 @@
   "name": "kickerboard",
   "version": "0.0.1",
   "description": "Leaderboard for IoT Kicker",
+  "private": true,
   "main": "index.js",
   "author": "Timo Uhlmann",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "babel-node server.js"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "standard": "^10.0.2"
+  }
 }
