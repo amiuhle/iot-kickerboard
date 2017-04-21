@@ -7,7 +7,7 @@
   "author": "Timo Uhlmann",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node server.js"
+    "start": "babel-watch server.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.4.0",
+    "babel-watch": "^2.0.6",
     "standard": "^10.0.2"
   }
 }
