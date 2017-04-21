@@ -65,20 +65,32 @@ nav ul li a:hover {
   text-align: right;
 }
 
-.scoreboard th {
-  width: 70px;
+
+table.players , table.scoreboard {
+  width: 100%;
 }
 
-.scoreboard {
+table.players td:first-child {
+  width: 33%;
+}
+table.players td:last-child {
+  width: 67%;
+}
+
+table.scoreboard td {
+  width: 33.3%;
+}
+
+.players, .scoreboard {
   border-collapse: collapse;
 }
-.scoreboard th, .scoreboard td {
+.players th, .players td, .scoreboard th, .scoreboard td {
   border-width: 1px;
   border-style: solid none;
   border-color: #ccc;
-  padding: 2px;
+  padding: 6px 12px;
 }
 
-.scoreboard th {
+.players th, .scoreboard th {
   border-color: #333;
 }
