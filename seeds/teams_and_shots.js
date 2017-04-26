@@ -1,6 +1,6 @@
 
 // http://www.dfb.de/die-mannschaft/statistik/rekordtorschuetzen/?no_cache=1
-var players = [
+var teams = [
   { id: 1, name: 'Klose' },
   { id: 2, name: 'Müller' },
   { id: 3, name: 'Streich' },
@@ -11,10 +11,10 @@ var players = [
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return Promise.all([
-    knex('players').del()
+    knex('teams').del()
     .then(function () {
       // Inserts seed entries
-      return knex('players').insert(players)
+      return knex('teams').insert(teams)
     }),
     knex('shots').del()
     .then(function () {
