@@ -8,8 +8,9 @@ exports.up = function (knex) {
     })
     .createTable('shots', function (table) {
       table.increments('id').primary()
-      table.integer('shooter_id').unsigned().references('id').inTable('teams')
-      table.integer('target_id').unsigned().references('id').inTable('teams')
+      table.integer('shooter_id').unsigned().notNullable().references('id').inTable('teams')
+      table.integer('target_id').unsigned().notNullable().references('id').inTable('teams')
+      table.integer('actual_hit_id').unsigned().references('id').inTable('teams')
       table.timestamps(true, true)
     })
 }
