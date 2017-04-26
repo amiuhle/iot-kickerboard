@@ -1,11 +1,11 @@
 
 // http://www.dfb.de/die-mannschaft/statistik/rekordtorschuetzen/?no_cache=1
 var teams = [
-  { id: 1, name: 'Klose' },
-  { id: 2, name: 'Müller' },
-  { id: 3, name: 'Streich' },
-  { id: 4, name: 'Podolski' },
-  { id: 5, name: 'Klinsmann' }
+  { id: 1, name: 'Team 1' },
+  { id: 2, name: 'Team 2' },
+  { id: 3, name: 'Team 3' },
+  { id: 4, name: 'Team 4' },
+  { id: 5, name: 'Team 5' }
 ]
 
 exports.seed = function (knex) {
@@ -19,16 +19,16 @@ exports.seed = function (knex) {
     knex('shots').del()
     .then(function () {
       return knex('shots').insert([
-        { shooter_id: 1, target_id: 5, success: false },
-        { shooter_id: 1, target_id: 2, success: true },
-        { shooter_id: 2, target_id: 5, success: false },
-        { shooter_id: 2, target_id: 1, success: true },
-        { shooter_id: 3, target_id: 4 },
-        { shooter_id: 3, target_id: 1, success: false },
-        { shooter_id: 4, target_id: 5, success: true },
-        { shooter_id: 4, target_id: 2, success: true },
+        { shooter_id: 1, target_id: 5 },
+        { shooter_id: 4, target_id: 5 },
         { shooter_id: 5, target_id: 3 },
-        { shooter_id: 5, target_id: 1, success: true }
+        { shooter_id: 3, target_id: 5 },
+        { shooter_id: 2, target_id: 4 },
+        { shooter_id: 1, target_id: 2 },
+        { shooter_id: 2, target_id: 1 },
+        { shooter_id: 1, target_id: 2 },
+        { shooter_id: 3, target_id: 5 },
+        { shooter_id: 5, target_id: 1 }
       ])
     })
   ])
