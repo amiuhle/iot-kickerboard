@@ -1,0 +1,18 @@
+<table class='players'>
+  <thead>
+    <tr>
+      <th class='left'>Time</th>
+      <th class='left'>Shooter</th>
+      <th class='left'>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each shots}}
+      <tr>
+        <td>{{time}}</td>
+        <td>{{shooter}}</td>
+        <td>{{target}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

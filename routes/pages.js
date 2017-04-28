@@ -48,4 +48,29 @@ router.get('/teams', async (req, res) => {
   })
 })
 
+router.get('/shots', async (req, res) => {
+  const query = knex.select('*').from('shots')
+
+  let shots = await debugAndFetch(query)
+
+  // make raw data presentable
+  shots = shots.map((shot) => {
+    const created = shot.created_at
+    const shooter = shot.shooter_id
+    const target = shot.target_id
+
+    const time = new Date(created).toLocaleTimeString()
+
+    return {
+      time,
+      shooter,
+      target
+    }
+  })
+
+  res.render('shots', {
+    shots
+  })
+})
+
 export default router
