@@ -1,19 +1,43 @@
 import 'babel-polyfill'
-import express from 'express'
-import Knex from 'knex'
-import { development } from './knexfile'
 
+// Fast, unopinionated, minimalist web framework for Node.js
+// https://expressjs.com/en/4x/api.html
+import express from 'express'
+
+// Minimal Templating on Steroids
+// http://handlebarsjs.com/
+import exphbs from 'express-handlebars'
+
+import logger from 'morgan'
+
+// import our routes
+import {
+  api,
+  pages
+} from './routes'
+
+// create express application
 const app = express()
 
-const knex = Knex(development)
+// view engine setup
+app.engine('.hbs', exphbs({
+  // handlebars templates use the .hbs file extension
+  extname: '.hbs',
+  // render within views/layouts/main.hbs
+  defaultLayout: 'main'
+}))
+app.set('view engine', '.hbs')
 
+// log HTTP requests to terminal
+app.use(logger('dev'))
 // serve static assets from 'public' directory
 app.use(express.static('public'))
+// there's probably a better way to handle this...
 app.use('/styles', express.static('node_modules/normalize.css'))
 
-app.get('/hello', function (req, res) {
-  res.send('Hello World!')
-})
+// use our routes
+app.use('/', pages)
+app.use('/api', api)
 
 // start HTTP server on port 3000
 app.listen(3000, () => {
