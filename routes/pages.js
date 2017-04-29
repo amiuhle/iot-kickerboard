@@ -1,4 +1,5 @@
 import 'console.table'
+import Intl from 'intl'
 
 // A SQL Query Builder for Javascript
 // http://knexjs.org/
@@ -23,6 +24,12 @@ async function debugAndFetch (query) {
 
   return result
 }
+
+const timeFormatter = new Intl.DateTimeFormat('de', {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+})
 
 // set up database connection
 const knex = Knex(development)
@@ -49,17 +56,19 @@ router.get('/teams', async (req, res) => {
 })
 
 router.get('/shots', async (req, res) => {
-  const query = knex.select('*').from('shots')
+  const query = knex.select('shots.id', 'shots.created_at', 'shooter.name AS shooter', 'target.name AS target').from('shots')
+    .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
+    .join('teams AS target', 'shots.target_id', '=', 'target.id')
 
   let shots = await debugAndFetch(query)
 
   // make raw data presentable
   shots = shots.map((shot) => {
-    const created = shot.created_at
-    const shooter = shot.shooter_id
-    const target = shot.target_id
+    const created = new Date(shot.created_at)
+    const shooter = shot.shooter
+    const target = shot.target
 
-    const time = new Date(created).toLocaleTimeString()
+    const time = timeFormatter.format(created)
 
     return {
       time,
