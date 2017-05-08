@@ -46,7 +46,7 @@ router.get('/shots', async (req, res) => {
   const query = knex.select('shots.id', 'shots.created_at', 'shooter.name AS shooter', 'target.name AS target', 'actualHit.name as actualHit').from('shots')
     .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
-    .join('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
+    .leftJoin('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
 
   let shots = await debugAndExecute(query)
 
