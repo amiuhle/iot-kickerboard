@@ -66,14 +66,16 @@ router.get('/shots', async (req, res) => {
       points = 1
     } else if (actualHit === shooter) {
       points = -1
+    } else if (actualHit === null) {
+      points = null
     }
 
     return {
       time,
       shooter,
       target,
-      actualHit,
-      points
+      actualHit: actualHit || '-',
+      points: points || '?'
     }
   })
 
