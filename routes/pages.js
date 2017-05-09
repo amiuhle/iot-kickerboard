@@ -47,6 +47,7 @@ router.get('/shots', async (req, res) => {
     .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
     .leftJoin('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
+    .orderBy('shots.id', 'desc')
 
   let shots = await debugAndExecute(query)
 
