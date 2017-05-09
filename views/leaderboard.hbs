@@ -1,0 +1,16 @@
+<table class='players'>
+  <thead>
+    <tr>
+      <th class='right'>Team</th>
+      <th class='left'>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each leaderboard}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{points}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

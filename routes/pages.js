@@ -84,4 +84,50 @@ router.get('/shots', async (req, res) => {
   })
 })
 
+router.get('/leaderboard', async (req, res) => {
+  const query = knex.select('shots.id', 'shots.created_at', 'shooter.name AS shooter', 'target.name AS target', 'actualHit.name as actualHit').from('shots')
+    .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
+    .join('teams AS target', 'shots.target_id', '=', 'target.id')
+    .join('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
+
+  let shots = await debugAndFetch(query)
+
+  const teams = shots.reduce((teams, shot) => {
+    // console.log('reduce', shot, teams)
+    const shooter = shot.shooter
+    const target = shot.target
+    const actualHit = shot.actualHit
+
+    let points = 0
+
+    if (actualHit === target) {
+      points = 1
+    } else if (actualHit === shooter) {
+      points = -1
+    }
+
+    const teamName = shooter
+
+    if (!teams.has(teamName)) {
+      teams.set(teamName, {
+        name: teamName,
+        points: 0
+      })
+    }
+    const team = teams.get(teamName)
+    team.points += points
+
+    return teams
+  }, new Map())
+
+  // http://stackoverflow.com/questions/28718641/transforming-a-javascript-iterator-into-an-array
+  const leaderboard = Array.from(teams.values())
+
+  leaderboard.sort((a, b) => b.points - a.points)
+
+  res.render('leaderboard', {
+    leaderboard
+  })
+})
+
 export default router
