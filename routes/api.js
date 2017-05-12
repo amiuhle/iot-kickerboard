@@ -18,6 +18,11 @@ router.post('/shots', async (req, res) => {
     const shooter = req.body.shooter
     const target = req.body.target
 
+    // get the id of the last inserted shot
+    const { lastShotId } = await debugAndExecute(knex('shots').orderBy('id', 'DESC').first('id AS lastShotId'))
+
+    // set actual_hit_id of last shot to shooter
+
     // create INSERT query to add new shot
     const createShot = knex('shots').insert({
       shooter_id: shooter,
