@@ -48,4 +48,18 @@ router.get('/teams', async (req, res) => {
   })
 })
 
+router.get('/shots', async (req, res) => {
+  // build database query, fetching all teams
+  const query = knex.select('*').from('shots')
+
+  // execute the query
+  const shots = await debugAndFetch(query)
+
+  // render views/shots.hbs
+  res.render('shots', {
+    // pass teams to view to display them
+    shots
+  })
+})
+
 export default router

@@ -1,0 +1,16 @@
+<table class='players'>
+  <thead>
+    <tr>
+      <th class='right'>Id</th>
+      <th class='left'>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each shots}}
+      <tr>
+        <td>{{shooter_id}}</td>
+        <td>{{target_id}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
