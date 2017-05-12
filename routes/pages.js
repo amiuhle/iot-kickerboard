@@ -10,20 +10,7 @@ import {
 import Knex from 'knex'
 import { development } from '../knexfile'
 
-/**
- * Helper function to execute and return a knex query,
- * logging query and result to the console.
- */
-async function debugAndFetch (query) {
-  console.log(`\n\nQuery: ${query.toString()}\nResult:`)
-
-  const result = await query
-
-  console.table(result)
-  console.log('')
-
-  return result
-}
+import { debugAndExecute } from '../utils'
 
 const timeFormatter = new Intl.DateTimeFormat('de', {
   hour: '2-digit',
@@ -46,7 +33,7 @@ router.get('/teams', async (req, res) => {
   const query = knex.select('*').from('teams')
 
   // execute the query
-  const teams = await debugAndFetch(query)
+  const teams = await debugAndExecute(query)
 
   // render views/teams.hbs
   res.render('teams', {
@@ -60,7 +47,7 @@ router.get('/shots', async (req, res) => {
     .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
 
-  let shots = await debugAndFetch(query)
+  let shots = await debugAndExecute(query)
 
   // make raw data presentable
   shots = shots.map((shot) => {

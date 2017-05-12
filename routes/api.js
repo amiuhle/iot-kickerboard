@@ -5,19 +5,10 @@ import {
 import Knex from 'knex'
 import { development } from '../knexfile'
 
+import { debugAndExecute } from '../utils'
+
 const knex = Knex(development)
 const router = Router()
-
-async function debugAndInsert (query) {
-  console.log(`\n\nQuery: ${query.toString()}\nResult:`)
-
-  const result = await query
-
-  console.table(result)
-  console.log('')
-
-  return result
-}
 
 router.post('/shots', async (req, res) => {
   try {
@@ -28,16 +19,16 @@ router.post('/shots', async (req, res) => {
     const target = req.body.target
 
     // create INSERT query to add new shot
-    const query = knex('shots').insert({
+    const createShot = knex('shots').insert({
       shooter_id: shooter,
       target_id: target
     })
 
     // execute and print query to console
-    const result = await debugAndInsert(query)
+    const result = await debugAndExecute(createShot)
 
     // give the id of the created shot to the client
-    res.send(201, {
+    res.status(201).send({
       shot_id: result[0]
     })
   } catch (ex) {
