@@ -18,6 +18,11 @@ router.post('/shots', async (req, res) => {
     const shooter = req.body.shooter
     const target = req.body.target
 
+    // simple data validation
+    if (shooter === target) {
+      throw new Error('Expected shooter and target to be different')
+    }
+
     // get the id of the last inserted shot
     const { lastShotId } = await debugAndExecute(knex('shots').orderBy('id', 'DESC').first('id AS lastShotId'))
 
