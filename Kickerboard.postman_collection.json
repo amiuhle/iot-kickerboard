@@ -1,0 +1,31 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Kickerboard",
+		"_postman_id": "62f6ad1c-2de1-e98a-afc9-0396c4c9b2e0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Shot",
+			"request": {
+				"url": "localhost:3000/api/shots",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"shooter\": 1,\n\t\"target\": 2\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

@@ -1,14 +1,14 @@
 import 'console.table'
 import Intl from 'intl'
 
+import {
+  Router
+} from 'express'
+
 // A SQL Query Builder for Javascript
 // http://knexjs.org/
 import Knex from 'knex'
 import { development } from '../knexfile'
-
-import {
-  Router
-} from 'express'
 
 /**
  * Helper function to execute and return a knex query,

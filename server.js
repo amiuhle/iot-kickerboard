@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+import bodyParser from 'body-parser'
 
 // Fast, unopinionated, minimalist web framework for Node.js
 // https://expressjs.com/en/4x/api.html
@@ -18,6 +19,9 @@ import {
 
 // create express application
 const app = express()
+
+// configure express to parse JSON
+app.use(bodyParser.json())
 
 // view engine setup
 app.engine('.hbs', exphbs({
