@@ -7,7 +7,13 @@ module.exports = {
     connection: {
       filename: './kickerboard_development.sqlite'
     },
-    useNullAsDefault: true
+    useNullAsDefault: true,
+    // https://github.com/tgriesser/knex/issues/453#issuecomment-54160324
+    pool: {
+      afterCreate: (conn, cb) => {
+        conn.run('PRAGMA foreign_keys = ON', cb)
+      }
+    }
   },
 
   staging: {
