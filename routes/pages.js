@@ -90,7 +90,7 @@ router.get('/leaderboard', async (req, res) => {
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
     .join('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
 
-  let shots = await debugAndFetch(query)
+  let shots = await debugAndExecute(query)
 
   const teams = shots.reduce((teams, shot) => {
     // console.log('reduce', shot, teams)
