@@ -1,15 +1,17 @@
 <table class='players'>
   <thead>
     <tr>
-      <th class='right'>Schütze</th>
-      <th class='left'>Empfänger</th>
+      <th class='right'>Id</th>
+      <th class='left'>Shooter</th>
+      <th class='left'>Target</th>
     </tr>
   </thead>
   <tbody>
     {{#each shots}}
       <tr>
-        <td>{{shooter_id}}</td>
-        <td>{{target_id}}</td>
+        <td>{{id}}</td>
+        <td>{{shooter}}</td>
+        <td>{{target}}</td>
       </tr>
     {{/each}}
   </tbody>
