@@ -12,3 +12,17 @@ export async function debugAndExecute (query) {
 
   return result
 }
+
+export function computePoints (shooter, target, actualHit) {
+  let points = 0
+
+  if (actualHit === target) {
+    points = 1
+  } else if (actualHit === shooter) {
+    points = -1
+  } else if (actualHit === null) {
+    points = null
+  }
+
+  return points
+}

@@ -10,7 +10,10 @@ import {
 import Knex from 'knex'
 import { development } from '../knexfile'
 
-import { debugAndExecute } from '../utils'
+import {
+  debugAndExecute,
+  computePoints
+} from '../utils'
 
 const timeFormatter = new Intl.DateTimeFormat('de', {
   hour: '2-digit',
@@ -60,15 +63,7 @@ router.get('/shots', async (req, res) => {
 
     const time = timeFormatter.format(created)
 
-    let points = 0
-
-    if (actualHit === target) {
-      points = 1
-    } else if (actualHit === shooter) {
-      points = -1
-    } else if (actualHit === null) {
-      points = null
-    }
+    const points = computePoints(shooter, target, actualHit)
 
     return {
       time,
@@ -98,13 +93,7 @@ router.get('/leaderboard', async (req, res) => {
     const target = shot.target
     const actualHit = shot.actualHit
 
-    let points = 0
-
-    if (actualHit === target) {
-      points = 1
-    } else if (actualHit === shooter) {
-      points = -1
-    }
+    const points = computePoints(shooter, target, actualHit)
 
     const teamName = shooter
 
