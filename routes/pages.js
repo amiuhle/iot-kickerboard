@@ -75,7 +75,7 @@ router.get('/shots', async (req, res) => {
       shooter,
       target,
       actualHit: actualHit || '-',
-      points: points || '?'
+      points: Number.isInteger(points) ? points : '?'
     }
   })
 
