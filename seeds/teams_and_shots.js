@@ -8,28 +8,53 @@ var teams = [
   { id: 4, name: 'Team 4' }
 ]
 
+function randomPlayer (shooter) {
+  // remove shooter from targets
+  const availablePlayers = teams.map(team => team.id).filter(player => player !== shooter)
+  // https://stackoverflow.com/a/4550514
+  const randomIndex = Math.floor(Math.random() * availablePlayers.length)
+  return availablePlayers[randomIndex]
+}
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return Promise.all([
-    knex('teams').del()
+  return knex('shots').del()
+    .then(() => knex('teams').del())
     .then(function () {
       // Inserts seed entries
       return knex('teams').insert(teams)
-    }),
-    knex('shots').del()
-    .then(function () {
-      return knex('shots').insert([
-        { shooter_id: 0, target_id: 4, actual_hit_id: 3 },
-        { shooter_id: 3, target_id: 4, actual_hit_id: 4 },
-        { shooter_id: 4, target_id: 2, actual_hit_id: 2 },
-        { shooter_id: 2, target_id: 4, actual_hit_id: 1 },
-        { shooter_id: 1, target_id: 3, actual_hit_id: 0 },
-        { shooter_id: 0, target_id: 1, actual_hit_id: 1 },
-        { shooter_id: 1, target_id: 0, actual_hit_id: 0 },
-        { shooter_id: 0, target_id: 1, actual_hit_id: 2 },
-        { shooter_id: 2, target_id: 4, actual_hit_id: 4 },
-        { shooter_id: 4, target_id: 0 }
-      ])
     })
-  ])
+    .then(function () {
+      const shotCount = 100
+      return knex('shots').insert(
+        // create an array of 100 random shots
+        new Array(shotCount).fill(undefined).map((_, index) => {
+          // pick a random player
+          const shooter = randomPlayer()
+          // pick another random player, not including shooter
+          const target = randomPlayer(shooter)
+
+          let actualHit = null
+          // because of how the API works, the last shot
+          // MUST have actual_hit_id = NULL
+          if (index + 1 < shotCount) {
+            // 80% chance of hitting
+            if (Math.random() < 0.8) {
+              actualHit = target
+            } else {
+              // if it's not a hit, pick another random player,
+              // this time without target
+              actualHit = randomPlayer(target)
+            }
+          }
+
+          // return the shot object to insert
+          return {
+            shooter_id: shooter,
+            target_id: target,
+            actual_hit_id: actualHit
+          }
+        })
+      )
+    })
 }
