@@ -27,8 +27,7 @@ const knex = Knex(development)
 const router = Router()
 
 router.get('/', (req, res) => {
-  // render views/index.hbs
-  res.render('index')
+  res.redirect('/leaderboard')
 })
 
 router.get('/teams', async (req, res) => {
