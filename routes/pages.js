@@ -45,13 +45,29 @@ router.get('/teams', async (req, res) => {
 })
 
 router.get('/shots', async (req, res) => {
+  const perPage = 10
+  const { numberOfShots } = await knex.table('shots').count('* as numberOfShots').first()
+  const firstPage = 1
+  const lastPage = Math.ceil(numberOfShots / perPage)
+
+  // read page from ?page= URL param, default to first page
+  let currentPage = Number.parseInt(req.query.page, 10) || firstPage
+  // page can't be < firstPage
+  currentPage = Math.max(1, currentPage)
+  // page can't be > lastPage
+  currentPage = Math.min(lastPage, currentPage)
+
   const query = knex.select('shots.id', 'shots.created_at', 'shooter.name AS shooter', 'target.name AS target', 'actualHit.name as actualHit').from('shots')
     .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
     .leftJoin('teams AS actualHit', 'shots.actual_hit_id', '=', 'actualHit.id')
     .orderBy('shots.id', 'desc')
+    // limit number of rows returned
+    .limit(perPage)
+    // starting at specified offset
+    .offset((currentPage - 1) * perPage)
 
-  let shots = await debugAndExecute(query)
+  let shots = await debugAndExecute(query, false)
 
   // make raw data presentable
   shots = shots.map((shot) => {
@@ -74,6 +90,16 @@ router.get('/shots', async (req, res) => {
   })
 
   res.render('shots', {
+    firstPage,
+    needsFirstPage: currentPage - 1 > firstPage,
+    prevPage: currentPage - 1,
+    needsPrevPage: currentPage > firstPage,
+    currentPage,
+    nextPage: currentPage + 1,
+    needsNextPage: currentPage < lastPage,
+    lastPage,
+    needsLastPage: currentPage + 1 < lastPage,
+
     shots
   })
 })

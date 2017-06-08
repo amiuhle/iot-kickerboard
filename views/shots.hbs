@@ -20,3 +20,18 @@
     {{/each}}
   </tbody>
 </table>
+<ul class="pages">
+  {{#if needsFirstPage}}
+  <li class='first'><a href='/shots?page={{firstPage}}'>{{firstPage}}</a></li>
+  {{/if}}
+  {{#if needsPrevPage}}
+  <li><a href='/shots?page={{prevPage}}'>{{prevPage}}</a></li>
+  {{/if}}
+  <li><span>{{currentPage}}</span></li>
+  {{#if needsNextPage}}
+  <li><a href='/shots?page={{nextPage}}'>{{nextPage}}</a></li>
+  {{/if}}
+  {{#if needsLastPage}}
+  <li class='last'><a href='/shots?page={{lastPage}}'>{{lastPage}}</a></li>
+  {{/if}}
+</ul>

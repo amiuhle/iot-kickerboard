@@ -2,12 +2,15 @@
  * Helper function to execute and return a knex query,
  * logging query and result to the console.
  */
-export async function debugAndExecute (query) {
-  console.log(`\n\nQuery: ${query.toString()}\nResult:`)
+export async function debugAndExecute (query, showResult = true) {
+  console.log(`\n\nQuery: ${query.toString()}`)
 
   const result = await query
 
-  console.table(result)
+  if (showResult) {
+    console.log('\nResult:')
+    console.table(result)
+  }
   console.log('')
 
   return result

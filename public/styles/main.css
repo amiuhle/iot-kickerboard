@@ -94,3 +94,36 @@ table.scoreboard td {
 .players th, .scoreboard th {
   border-color: #333;
 }
+
+.pages {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.pages > * {
+  flex: 2em 0 0;
+  text-align: center;
+  display: flex;
+}
+
+.pages > .first {
+  margin-right: 1em;
+}
+
+.pages > .last {
+  margin-left: 1em;
+}
+
+.pages > * > a, .pages > * > span {
+  flex: 1;
+
+  padding: 12px;
+  color: #333;
+  text-decoration: none;
+}
+
+.pages > * > a:hover, .pages > * > span {
+  background-color: #333;
+  color: white;
+}
