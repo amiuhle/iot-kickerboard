@@ -21,11 +21,13 @@ async function debugAndInsert (query) {
 
 router.post('/shots', async (req, res) => {
   try {
-    console.log('POST /shots', req.body)
+    console.log('POST /shots', req.body.shooter)
 
     // read values from request
     // create INSERT query to add new shot
     const query = knex('shots').insert({
+      shooter_id: req.body.shooter,
+      target_id: req.body.target 
     })
     // execute and print query to console
     const result = await debugAndInsert(query)
