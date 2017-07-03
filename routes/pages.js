@@ -70,6 +70,8 @@ router.get('/shots', async (req, res) => {
   let shots = await debugAndExecute(query, false)
 
   // make raw data presentable
+
+  // loop over every shot
   shots = shots.map((shot) => {
     const created = new Date(shot.created_at)
     const shooter = shot.shooter
@@ -78,18 +80,23 @@ router.get('/shots', async (req, res) => {
 
     const time = timeFormatter.format(created)
 
+    // calculate the points for this shot
     const points = computePoints(shooter, target, actualHit)
 
+    // return the updated shot
     return {
       time,
       shooter,
       target,
+      // if actualHit is undefined (last shot), display as '-'
       actualHit: actualHit || '-',
+      // if points is undefined (last shot), display as '?
       points: Number.isInteger(points) ? points : '?'
     }
   })
 
   res.render('shots', {
+    // pass in data for pagination
     firstPage,
     needsFirstPage: currentPage - 1 > firstPage,
     prevPage: currentPage - 1,
@@ -100,11 +107,13 @@ router.get('/shots', async (req, res) => {
     lastPage,
     needsLastPage: currentPage + 1 < lastPage,
 
+    // pass in the list of shots
     shots
   })
 })
 
 router.get('/leaderboard', async (req, res) => {
+  // query returns list of shots with team names instead of ids
   const query = knex.select('shots.id', 'shots.created_at', 'shooter.name AS shooter', 'target.name AS target', 'actualHit.name as actualHit').from('shots')
     .join('teams AS shooter', 'shots.shooter_id', '=', 'shooter.id')
     .join('teams AS target', 'shots.target_id', '=', 'target.id')
@@ -112,33 +121,45 @@ router.get('/leaderboard', async (req, res) => {
 
   let shots = await debugAndExecute(query)
 
+  // compute each team's points in a Map by looping over all shots
   const teams = shots.reduce((teams, shot) => {
-    // console.log('reduce', shot, teams)
-    const shooter = shot.shooter
-    const target = shot.target
-    const actualHit = shot.actualHit
+    // extract values from the current shot
+    const {
+      shooter,
+      target,
+      actualHit
+    } = shot
 
+    // calculate the points for this shot
     const points = computePoints(shooter, target, actualHit)
 
+    // we want to adjust the points for the current shooter
     const teamName = shooter
 
+    // if this team hasn't been handled before, create a new object
+    // to store it's values and save it to the map
     if (!teams.has(teamName)) {
       teams.set(teamName, {
         name: teamName,
         points: 0
       })
     }
+
     const team = teams.get(teamName)
+    // adjust the team's points by adding -1, 0 or 1
     team.points += points
 
+    // return the Map of teams so `reduce` can pass it again for the next shot
     return teams
   }, new Map())
 
   // http://stackoverflow.com/questions/28718641/transforming-a-javascript-iterator-into-an-array
   const leaderboard = Array.from(teams.values())
 
+  // sort the leaderboard by how many points a team has
   leaderboard.sort((a, b) => b.points - a.points)
 
+  // pass the leaderboard to our view
   res.render('leaderboard', {
     leaderboard
   })
